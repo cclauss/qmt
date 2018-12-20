@@ -44,10 +44,10 @@ COPY . qmt/
 
 # Set up python environment... this takes awhile:
 RUN conda config --set always_yes yes --set changeps1 no && \
-    conda env create -v -q -n py36 -f qmt/deployment/environment_full.yml && \
+    conda env update -v -q -n base -f qmt/deployment/environment_full.yml && \
     conda clean -aq && \
-    echo "conda activate py36" >> ~/.bashrc
-ENV PATH /usr/local/envs/py36/bin:$PATH
+    echo "conda activate" >> ~/.bashrc
+ENV PATH /usr/local/bin:$PATH
 
 # Expose 8888 for jupyter notebook
 EXPOSE 8888
@@ -56,9 +56,9 @@ EXPOSE 8888
 # and fix the link to libstdc++, which is currently a conda bug
 RUN find /usr/local/pkgs/ -maxdepth 1 -type d -name freecad* | \
     tail -n 1 | awk '{print $1"/lib"}' > \
-    /usr/local/envs/py36/lib/python3.6/site-packages/freecad.pth && \
-    rm /usr/local/envs/py36/lib/libstdc++.so.6 && \
-    ln -s /usr/local/envs/py36/lib/libstdc++.so.6.0.24 /usr/local/envs/py36/lib/libstdc++.so.6
+    /usr/local/lib/python3.6/site-packages/freecad.pth && \
+    rm /usr/local/lib/libstdc++.so.6 && \
+    ln -s /usr/local/lib/libstdc++.so.6.0.24 /usr/local/lib/libstdc++.so.6
 
 # Move the dask config file into place
 RUN mkdir /root/.dask && mv qmt/deployment/dask_config.yaml /root/.dask/.

@@ -4,7 +4,6 @@
 # This file is kept around so that if we want to upgrade version numbers, we can conda build
 # on this. If not please use environment_full.yml, which is much less likely to give you issues
 # due to packages versioning
-name: py36
 channels:
   - conda-forge
 dependencies:
